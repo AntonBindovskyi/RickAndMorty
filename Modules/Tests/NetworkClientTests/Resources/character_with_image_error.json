@@ -1,0 +1,20 @@
+{
+    "id": 821,
+    "name": "Gotron",
+    "status": "unknown",
+    "species": "Robot",
+    "type": "Ferret Robot",
+    "gender": "Genderless",
+    "origin": {
+        "name": "Earth (Replacement Dimension)",
+        "url": "https://rickandmortyapi.com/api/location/20"
+    },
+    "location": {
+        "name": "Earth (Replacement Dimension)",
+        "url": "https://rickandmortyapi.com/api/location/20"
+    },
+    "image": "",
+    "episode": [],
+    "url": "",
+    "created": "2021-11-02T17:15:24.788Z"
+}

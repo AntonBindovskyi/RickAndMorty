@@ -1,0 +1,96 @@
+{
+    "info": {
+        "count": 826,
+        "pages": 42,
+        "next": "https://rickandmortyapi.com/api/character/?page=2",
+        "prev": null
+    },
+    "results": [
+        {
+            "id": 1,
+            "name": "Rick Sanchez",
+            "status": "Alive",
+            "species": "Human",
+            "type": "",
+            "gender": "Male",
+            "origin": {
+                "name": "Earth (C-137)",
+                "url": "https://rickandmortyapi.com/api/location/1"
+            },
+            "location": {
+                "name": "Citadel of Ricks",
+                "url": "https://rickandmortyapi.com/api/location/3"
+            },
+            "image": "https://rickandmortyapi.com/api/character/avatar/1.jpeg",
+            "episode": [
+                "https://rickandmortyapi.com/api/episode/1"
+            ],
+            "url": "https://rickandmortyapi.com/api/character/1",
+            "created": "2017-11-04T18:48:46.250Z"
+        },
+        {
+            "id": 250,
+            "name": "Mrs. Sullivan",
+            "status": "Dead",
+            "species": "Human",
+            "type": "Cat controlled dead lady",
+            "gender": "Female",
+            "origin": {
+                "name": "Earth (C-500A)",
+                "url": "https://rickandmortyapi.com/api/location/23"
+            },
+            "location": {
+                "name": "Interdimensional Cable",
+                "url": "https://rickandmortyapi.com/api/location/6"
+            },
+            "image": "https://rickandmortyapi.com/api/character/avatar/250.jpeg",
+            "episode": [
+                "https://rickandmortyapi.com/api/episode/8"
+            ],
+            "url": "https://rickandmortyapi.com/api/character/250",
+            "created": "2017-12-30T18:24:49.372Z"
+        },
+        {
+            "id": 580,
+            "name": "Secret Service Snake",
+            "status": "Alive",
+            "species": "Animal",
+            "type": "Snake",
+            "gender": "Male",
+            "origin": {
+                "name": "Snake Planet",
+                "url": "https://rickandmortyapi.com/api/location/78"
+            },
+            "location": {
+                "name": "Snake Planet",
+                "url": "https://rickandmortyapi.com/api/location/78"
+            },
+            "image": "https://rickandmortyapi.com/api/character/avatar/580.jpeg",
+            "episode": [
+                "https://rickandmortyapi.com/api/episode/36"
+            ],
+            "url": "https://rickandmortyapi.com/api/character/580",
+            "created": "2020-05-07T12:23:20.171Z"
+        },
+        {
+            "id": 821,
+            "name": "Gotron",
+            "status": "unknown",
+            "species": "Robot",
+            "type": "Ferret Robot",
+            "gender": "Genderless",
+            "origin": {
+                "name": "Earth (Replacement Dimension)",
+                "url": "https://rickandmortyapi.com/api/location/20"
+            },
+            "location": {
+                "name": "Earth (Replacement Dimension)",
+                "url": "https://rickandmortyapi.com/api/location/20"
+            },
+            "image": "not an URL",
+            "episode": [],
+            "url": "not an URL",
+            "created": "2021-11-02T17:15:24.788Z"
+        }
+    ]
+}
