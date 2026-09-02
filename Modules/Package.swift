@@ -3,9 +3,7 @@
 
 import PackageDescription
 
-let mainActorIsolated: [SwiftSetting] = [
-    .defaultIsolation(MainActor.self)
-]
+let mainActorIsolated: [SwiftSetting] = []
 
 let package = Package(
     name: "Modules",
