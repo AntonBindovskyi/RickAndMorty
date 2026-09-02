@@ -11,7 +11,7 @@ import Foundation
 import Models
 
 @Reducer
-public struct CharactersList: Sendable{
+public struct CharactersList: Sendable {
 
     @ObservableState
     public struct State: Equatable {
