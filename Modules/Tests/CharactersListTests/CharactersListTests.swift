@@ -21,6 +21,7 @@ struct CharactersListTests {
         let store = TestStore(initialState: CharactersList.State()) {
             CharactersList()
         } withDependencies: {
+            $0.charactersStorage = .noop
             $0.networkClient.characters = { _ in
                 CharactersPage.stub(startID: 1, count: 3)
             }
@@ -45,6 +46,7 @@ struct CharactersListTests {
         let store = TestStore(initialState: CharactersList.State()) {
             CharactersList()
         } withDependencies: {
+            $0.charactersStorage = .noop
             $0.networkClient.characters = { _ in
                 throw NetworkError.server(statusCode: 500)
             }
@@ -68,6 +70,7 @@ struct CharactersListTests {
         let store = TestStore(initialState: CharactersList.State()) {
             CharactersList()
         } withDependencies: {
+            $0.charactersStorage = .noop
             $0.networkClient.characters = { _ in
                 if shouldFail.value {
                     throw NetworkError.connection(.notConnectedToInternet)
@@ -124,10 +127,12 @@ struct CharactersListTests {
         var initial = CharactersList.State()
         initial.characters = IdentifiedArray(uniqueElements: [Character.rick])
         initial.viewState = .loaded
+        initial.currentPage = 1
 
         let store = TestStore(initialState: initial) {
             CharactersList()
         } withDependencies: {
+            $0.charactersStorage = .noop
             $0.networkClient.characters = { _ in throw NetworkError.cancelled }
         }
 
@@ -170,6 +175,7 @@ struct CharactersListTests {
         let store = TestStore(initialState: initial) {
             CharactersList()
         } withDependencies: {
+            $0.charactersStorage = .noop
             $0.networkClient.characters = { _ in
                 CharactersPage.stub(startID: 21, count: 2, hasNextPage: false)
             }

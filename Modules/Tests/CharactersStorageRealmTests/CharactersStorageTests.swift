@@ -1,5 +1,5 @@
 //
-//  CharacrtersStorageRealm.swift
+//  CharactersStorageTests.swift
 //  Modules
 //
 //  Created by Anton Bindovskyi on 03.09.2026.

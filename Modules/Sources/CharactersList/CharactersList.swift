@@ -100,7 +100,6 @@ public struct CharactersList: Sendable {
                 return .send(.delegate(.openDetail(character)))
 
             case .reachedEnd:
-                print("reachedEnd: canLoadMore=\(state.canLoadMore) page=\(state.currentPage) loading=\(state.isLoadingMore) count=\(state.characters.count)")
                 guard state.canLoadMore else {
                     return .none
                 }

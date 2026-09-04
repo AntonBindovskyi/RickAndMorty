@@ -36,7 +36,6 @@ actor RealmStore {
 
     func save(_ characters: [Character]) async throws {
         let realm = try await realm()
-        let now = Date()
 
         try await realm.asyncWrite {
             realm.add(
