@@ -19,9 +19,8 @@ nonisolated final class CharacterObject: Object {
     @Persisted var originName: String
     @Persisted var locationName: String
     @Persisted var episodeCount: Int
-    @Persisted var updatedAt: Date
 
-    convenience init(_ character: Character, updatedAt: Date) {
+    convenience init(_ character: Character) {
         self.init()
         self.id = character.id
         self.name = character.name
@@ -32,7 +31,6 @@ nonisolated final class CharacterObject: Object {
         self.originName = character.originName
         self.locationName = character.locationName
         self.episodeCount = character.episodeCount
-        self.updatedAt = updatedAt
     }
 }
 

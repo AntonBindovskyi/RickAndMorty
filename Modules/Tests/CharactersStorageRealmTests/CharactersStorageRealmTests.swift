@@ -18,7 +18,7 @@ struct CharacterObjectTests {
     @Test("roundTripPreservesFields")
     func roundTripPreservesFields() throws {
         let original = Character.rick
-        let object = CharacterObject(original, updatedAt: .now)
+        let object = CharacterObject(original)
 
         let restored = try #require(object.asDomain)
 
@@ -28,7 +28,7 @@ struct CharacterObjectTests {
     @Test("preservesEnums")
     func preservesEnums() throws {
         for character in [Character.rick, .morty, .smith] {
-            let object = CharacterObject(character, updatedAt: .now)
+            let object = CharacterObject(character)
             let restored = try #require(object.asDomain)
 
             #expect(restored.status == character.status)
@@ -38,7 +38,7 @@ struct CharacterObjectTests {
 
     @Test("unknownRawValueDegrades")
     func unknownRawValueDegrades() throws {
-        let object = CharacterObject(.rick, updatedAt: .now)
+        let object = CharacterObject(.rick)
         object.status = "superposed"
         object.gender = "yes"
 
@@ -50,18 +50,10 @@ struct CharacterObjectTests {
 
     @Test("invalidRecordReturnsNil")
     func invalidRecordReturnsNil() {
-        let object = CharacterObject(.rick, updatedAt: .now)
+        let object = CharacterObject(.rick)
         object.imageURLString = ""
 
         #expect(object.asDomain == nil)
-    }
-
-    @Test("storesMetadata")
-    func storesMetadata() {
-        let date = Date(timeIntervalSince1970: 1_700_000_000)
-        let object = CharacterObject(.rick, updatedAt: date)
-
-        #expect(object.updatedAt == date)
     }
 
     @Test("persistsToRealm")
@@ -69,7 +61,7 @@ struct CharacterObjectTests {
         let realm = try Realm(configuration: .configurationInMemory())
 
         try realm.write {
-            realm.add(CharacterObject(.rick, updatedAt: .now))
+            realm.add(CharacterObject(.rick))
         }
 
         let stored = try #require(realm.object(ofType: CharacterObject.self, forPrimaryKey: 1))

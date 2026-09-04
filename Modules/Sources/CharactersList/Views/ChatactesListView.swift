@@ -36,7 +36,9 @@ public struct CharactersListView: View {
                 store.send(.retryTapped)
             }
         } else {
-            list
+            VStack(spacing: 0) {
+                list
+            }
         }
     }
 
@@ -54,12 +56,23 @@ public struct CharactersListView: View {
                     store.send(.reachedEnd)
                 }
             }
-
-            if store.isLoadingMore {
-                loadingFooter
+            if store.hasNextPage {
+                paginationFooter
             }
         }
         .listStyle(.plain)
+    }
+    
+    private var paginationFooter: some View {
+        HStack {
+            Spacer()
+            ProgressView()
+            Spacer()
+        }
+        .padding(.vertical, 12)
+        .listRowSeparator(.hidden)
+        .id(store.characters.count)
+        .onAppear { store.send(.reachedEnd) }
     }
 
     private var loadingFooter: some View {

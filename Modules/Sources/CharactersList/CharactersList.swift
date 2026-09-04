@@ -6,6 +6,7 @@
 //
 
 import NetworkClient
+import CharactersStorage
 import ComposableArchitecture
 import Foundation
 import Models
@@ -40,6 +41,9 @@ public struct CharactersList: Sendable {
             }
             return error
         }
+        var canLoadMore: Bool {
+            hasNextPage && !isLoadingMore && currentPage > 0 && viewState == .loaded
+        }
     }
 
     public enum Action: Equatable {
@@ -47,6 +51,7 @@ public struct CharactersList: Sendable {
         case retryTapped
         case characterTapped(Character)
         case reachedEnd
+        case cacheLoaded([Character])
         case pageResponse(Result<CharactersPage, NetworkError>, page: Int)
         case delegate(Delegate)
 
@@ -58,13 +63,15 @@ public struct CharactersList: Sendable {
     
     private enum CancelID: String {
         case pageRequest
+        case cacheRead
     }
 
     @Dependency(\.networkClient) var networkClient
+    @Dependency(\.charactersStorage) var storage
 
     public init() {}
 
-    public var body: some ReducerOf<Self> {
+    public var body: some Reducer<State, Action> {
         Reduce { state, action in
             switch action {
 
@@ -72,20 +79,29 @@ public struct CharactersList: Sendable {
                 guard state.characters.isEmpty, state.viewState != .loading else {
                     return .none
                 }
-                return loadFirstPage(&state)
+                state.viewState = .loading
+                return .merge(
+                    loadCache(),
+                    fetch(page: 1)
+                )
 
             case .retryTapped:
                 return loadFirstPage(&state)
+
+            case let .cacheLoaded(cached):
+                guard state.characters.isEmpty, !cached.isEmpty else {
+                    return .none
+                }
+                state.characters = IdentifiedArray(uniqueElements: cached)
+                state.viewState = .loaded
+                return .none
 
             case let .characterTapped(character):
                 return .send(.delegate(.openDetail(character)))
 
             case .reachedEnd:
-                guard
-                    state.hasNextPage,
-                    !state.isLoadingMore,
-                    state.viewState == .loaded
-                else {
+                print("reachedEnd: canLoadMore=\(state.canLoadMore) page=\(state.currentPage) loading=\(state.isLoadingMore) count=\(state.characters.count)")
+                guard state.canLoadMore else {
                     return .none
                 }
                 state.isLoadingMore = true
@@ -97,12 +113,23 @@ public struct CharactersList: Sendable {
                 state.currentPage = pageNumber
                 state.hasNextPage = page.hasNextPage
                 state.characters.append(contentsOf: page.characters)
-                return .none
+
+                return .run { [characters = page.characters] _ in
+                    try? await storage.save(characters)
+                }
 
             case let .pageResponse(.failure(error), _):
                 state.isLoadingMore = false
-                guard !error.isCancellation else { return .none }
-                state.viewState = state.characters.isEmpty ? .error(error) : .loaded
+
+                guard !error.isCancellation else {
+                    return .none
+                }
+
+                if state.characters.isEmpty {
+                    state.viewState = .error(error)
+                } else {
+                    state.viewState = .loaded
+                }
                 return .none
 
             case .delegate:
@@ -118,8 +145,18 @@ public struct CharactersList: Sendable {
         return fetch(page: 1)
     }
 
-    private func fetch(page: Int) -> Effect<Action> {
+    private func loadCache() -> Effect<Action> {
         .run { send in
+            guard let cached = try? await storage.load(), !cached.isEmpty else {
+                return
+            }
+            await send(.cacheLoaded(cached))
+        }
+        .cancellable(id: CancelID.cacheRead, cancelInFlight: true)
+    }
+
+    private func fetch(page: Int) -> Effect<Action> {
+        return .run { send in
             await send(
                 .pageResponse(
                     Result { try await networkClient.characters(page: page) }

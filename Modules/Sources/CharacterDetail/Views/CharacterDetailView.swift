@@ -34,10 +34,12 @@ public struct CharacterDetailView: View {
                 image
                     .resizable()
                     .scaledToFill()
-            } else {
+            } else if state.error != nil {
                 Image(systemName: "person.slash")
                     .font(.largeTitle)
                     .foregroundStyle(.secondary)
+            } else {
+                ProgressView()
             }
         }
         .frame(maxWidth: .infinity)

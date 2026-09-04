@@ -40,7 +40,7 @@ actor RealmStore {
 
         try await realm.asyncWrite {
             realm.add(
-                characters.map { CharacterObject($0, updatedAt: now) },
+                characters.map { CharacterObject($0) },
                 update: .modified
             )
         }

@@ -6,6 +6,7 @@
 //
 
 import Models
+import Nuke
 import NukeUI
 import SwiftUI
 
@@ -44,7 +45,17 @@ struct CharacterRowView: View {
     }
 
     private var avatar: some View {
-        LazyImage(url: character.imageURL) { state in
+        LazyImage(
+            request: ImageRequest(
+                url: character.imageURL,
+                processors: [
+                    ImageProcessors.Resize(
+                        width: Layout.imageSize,
+                        unit: .points
+                    )
+                ]
+            )
+        ) { state in
             if let image = state.image {
                 image
                     .resizable()
